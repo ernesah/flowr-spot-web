@@ -4,6 +4,7 @@ import Button from '../Button';
 import Modal from '../modals/Modal';
 import RegisterForm from '../modals/RegisterFormModal';
 import LoginForm from '../modals/LoginFormModal';
+import ProfileModal from '../modals/ProfileModal';
 import headerLinks from '../../data/header-links.json';
 import { AuthContext } from '../../store/auth-context';
 import Avatar from '../../assets/images/menu-profile-holder.png';
@@ -49,7 +50,10 @@ const HeaderMenuContent = () => {
             </li>
           </>
         ) : (
-          <div className='flex items-center gap-x-4 cursor-pointer'>
+          <div
+            className='flex items-center gap-x-4 cursor-pointer'
+            onClick={() => toggleModal('profile')}
+          >
             <p className='font-medium text-sm text-dusty-grey'>
               {user.first_name} {user.last_name}
             </p>
@@ -65,7 +69,13 @@ const HeaderMenuContent = () => {
           <RegisterForm onSuccessRegistration={() => toggleModal('login')} />
         )}
         {openModal === 'login' && (
-          <LoginForm onSuccessLogin={() => toggleModal(null)} />
+          <LoginForm
+            onSuccessLogin={() => toggleModal(null)}
+            openProfile={() => toggleModal('profile')}
+          />
+        )}
+        {openModal === 'profile' && (
+          <ProfileModal closeModal={() => toggleModal(null)} />
         )}
       </Modal>
     </>

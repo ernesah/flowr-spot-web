@@ -1,27 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../api/api';
 import { getLoggedInUserData } from '../api/user.api';
-
-interface UserObj {
-  id: number;
-  first_name: string;
-  last_name: string;
-}
+import User from '../models/User';
 
 interface AuthContextObj {
-  user: UserObj | null;
+  user: User | null;
   setSession: (authToken: string) => void;
+  logoutUser: () => void;
 }
 
 export const AuthContext = React.createContext<AuthContextObj>({
   user: null,
-  setSession: (authToken: string) => {}
+  setSession: (authToken: string) => {},
+  logoutUser: () => {}
 });
 
 const AuthContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [user, setUser] = useState<UserObj | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const authToken = localStorage.getItem('token');
@@ -43,9 +40,16 @@ const AuthContextProvider: React.FC<{
     }
   };
 
+  const logoutUser = () => {
+    setUser(null);
+    localStorage.removeItem('token');
+    delete axiosInstance.defaults.headers.common.Authorization;
+  };
+
   const contextValue = {
     user,
-    setSession
+    setSession,
+    logoutUser
   };
 
   return (

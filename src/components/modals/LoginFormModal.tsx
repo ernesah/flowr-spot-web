@@ -9,7 +9,8 @@ import { AuthContext } from '../../store/auth-context';
 
 const LoginForm: React.FC<{
   onSuccessLogin: () => void;
-}> = ({ onSuccessLogin }) => {
+  openProfile: () => void;
+}> = ({ onSuccessLogin, openProfile }) => {
   const { setSession } = useContext(AuthContext);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -44,6 +45,7 @@ const LoginForm: React.FC<{
               title='PROFILE'
               type='link'
               classes='w-fit border border-ruddy-pink rounded py-4 px-5'
+              handleClick={openProfile}
             />
           </div>
         </div>

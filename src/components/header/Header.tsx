@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import HeaderMenuContent from './HeaderMenuContent';
 import logo from '../../assets/images/logo.png';
@@ -7,6 +7,14 @@ import closeIcon from '../../assets/icons/close-icon.svg';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [menuOpen]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -30,7 +38,7 @@ const Header = () => {
         />
       </div>
       <div className={`${menuOpen ? 'contents' : 'hidden'} lg:hidden`}>
-        <div className='absolute top-14 left-0 bg-white z-20 w-full h-full'>
+        <div className='absolute top-14 left-0 bg-white z-20 w-full md:w-1/2 h-full'>
           <div className='flex flex-col justify-center items-start px-4 h-full'>
             <HeaderMenuContent />
           </div>

@@ -1,27 +1,35 @@
+import { useContext } from 'react';
+import { AuthContext } from '../../store/auth-context';
 import Flower from '../../models/Flower';
-import GrayStar from '../../assets/icons/gray-star.svg';
-import WhiteStar from '../../assets/icons/white-star.svg';
+import grayStar from '../../assets/icons/gray-star.svg';
+import whiteStart from '../../assets/icons/white-star.svg';
 
 const FlowerCard = ({ data }: { data: Flower }) => {
+  const { user } = useContext(AuthContext);
+
   return (
     <div
       key={data.id}
-      className='flex flex-col justify-between items-center w-full h-[230px] md:h-[290px] lg:h-[350px] text-white rounded p-4 bg-cover bg-no-repeat'
+      className={`flex flex-col ${
+        user ? 'justify-between' : 'justify-end'
+      } items-center w-full h-[230px] md:h-[290px] lg:h-[350px] text-white rounded p-4 bg-cover bg-no-repeat`}
       style={{ backgroundImage: `url(${data.profile_picture})` }}
     >
-      <div
-        className={`flex items-center ${
-          data.favorite
-            ? 'bg-soft-pink-gradient'
-            : 'bg-white shadow-soft-elevation'
-        } w-6 h-6 lg:w-circle-small lg:h-circle-small rounded-full p-1.5 ml-auto`}
-      >
-        <img
-          src={data.favorite ? WhiteStar : GrayStar}
-          alt='star'
-          className='w-full h-full'
-        />
-      </div>
+      {user && (
+        <div
+          className={`flex items-center ${
+            data.favorite
+              ? 'bg-soft-pink-gradient'
+              : 'bg-white shadow-soft-elevation'
+          } w-6 h-6 lg:w-circle-small lg:h-circle-small rounded-full p-1.5 ml-auto`}
+        >
+          <img
+            src={data.favorite ? whiteStart : grayStar}
+            alt='star'
+            className='w-full h-full'
+          />
+        </div>
+      )}
       <div className='flex flex-col items-center font-ubuntu'>
         <h3 className='text-xl capitalize'>{data.name}</h3>
         <h6 className='text-xs italic capitalize'>{data.latin_name}</h6>
