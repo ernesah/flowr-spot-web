@@ -2,7 +2,13 @@
 module.exports = {
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
-    extend: {}
+    extend: {
+      fontFamily: {
+        ubuntu: ['Ubuntu', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
+        playfair: ['Playfair Display', 'serif']
+      }
+    }
   },
   plugins: []
 };
