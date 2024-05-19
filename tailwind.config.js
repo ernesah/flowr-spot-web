@@ -13,8 +13,11 @@ module.exports = {
         subtitle: ['17px', '17px']
       },
       colors: {
+        mercury: '#DFE5EA',
+        'bluish-cyan': '#334144',
         'dusty-grey': '#949EA0',
-        'ruddy-pink': '#DF9186'
+        'ruddy-pink': '#DF9186',
+        'white-lilac': '#F5F6F7'
       },
       width: {
         'circle-small': '30px'
