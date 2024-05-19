@@ -1,0 +1,7 @@
+{
+  "data": [
+    { "label": "Flowers", "link": "/flowers" },
+    { "label": "Latest Sightings", "link": "/latest-sightings" },
+    { "label": "Favorites", "link": "/favorites" }
+  ]
+}
