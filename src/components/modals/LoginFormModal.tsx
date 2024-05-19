@@ -1,23 +1,22 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import InputField from '../CustomTextInput';
 import Button from '../Button';
 import ErrorDisplay from '../ErrorDisplay';
-import { createAccount } from '../../api/user.api';
+import { login as loginApi } from '../../api/auth.api';
+import { AuthContext } from '../../store/auth-context';
 
-const RegisterForm: React.FC<{ onSuccessRegistration: () => void }> = ({
-  onSuccessRegistration
-}) => {
-  const [userRegistered, setUserRegistered] = useState(false);
+const LoginForm: React.FC<{
+  onSuccessLogin: () => void;
+}> = ({ onSuccessLogin }) => {
+  const { setSession } = useContext(AuthContext);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const RegisterFormSchema = Yup.object().shape({
-    first_name: Yup.string().required('First name is required*'),
-    last_name: Yup.string().required('Last name is required*'),
-    date_of_birth: Yup.date().required('Enter your date of birth*'),
+  const LoginFormSchema = Yup.object().shape({
     email: Yup.string()
-      .email('Please enter a valid email address!')
+      .email('Invalid email format')
       .required('Email is required*'),
     password: Yup.string()
       .min(6, 'Password must be at least 6 characters.')
@@ -30,45 +29,47 @@ const RegisterForm: React.FC<{ onSuccessRegistration: () => void }> = ({
 
   return (
     <>
-      {userRegistered ? (
-        <div>
+      {userLoggedIn ? (
+        <div className='mt-3'>
           <h3 className='font-ubuntu font-medium text-bluish-cyan text-xl text-center'>
-            Congratulations! You have successfully registered on FlowrSpot!
+            Congratulations! You have successfully logged into FlowrSpot!
           </h3>
-          <div className='flex justify-end mt-4'>
+          <div className='flex justify-end gap-x-4 mt-7'>
             <Button
               title='OK'
-              classes='w-fit rounded mt-2 py-4'
-              handleClick={onSuccessRegistration}
+              classes='w-fit rounded py-4 px-5'
+              handleClick={onSuccessLogin}
+            />
+            <Button
+              title='PROFILE'
+              type='link'
+              classes='w-fit border border-ruddy-pink rounded py-4 px-5'
             />
           </div>
         </div>
       ) : (
         <>
           <h3 className='font-ubuntu font-medium text-bluish-cyan text-xl text-center'>
-            Create an Account
+            Welcome Back
           </h3>
           <div className='w-full mt-6 mb-4'>
             <Formik
               initialValues={{
-                first_name: '',
-                last_name: '',
-                date_of_birth: '',
                 email: '',
                 password: ''
               }}
-              validationSchema={RegisterFormSchema}
+              validationSchema={LoginFormSchema}
               onSubmit={async (values, { setErrors, setSubmitting }) => {
                 try {
-                  const response = await createAccount(values);
+                  const response = await loginApi(values);
                   if (response.data.auth_token) {
-                    setUserRegistered(true);
+                    setUserLoggedIn(true);
+                    setSession(response.data.auth_token);
                   }
                   setSubmitting(false);
                 } catch (err: any) {
                   setErrorMessage(
-                    err.response.data.error ||
-                      'An error occurred during registration. Please try again!'
+                    err.response.data.error || 'An error occurred'
                   );
                   setSubmitting(false);
                 }
@@ -76,24 +77,6 @@ const RegisterForm: React.FC<{ onSuccessRegistration: () => void }> = ({
             >
               {({ isSubmitting }) => (
                 <Form>
-                  <div className='grid md:grid-cols-2 gap-x-2'>
-                    <InputField
-                      id='first_name'
-                      name='first_name'
-                      label='First Name'
-                    />
-                    <InputField
-                      id='last_name'
-                      name='last_name'
-                      label='Last Name'
-                    />
-                  </div>
-                  <InputField
-                    id='date_of_birth'
-                    type='date'
-                    name='date_of_birth'
-                    label='Date of Birth'
-                  />
                   <InputField id='email' name='email' label='Email Address' />
                   <InputField
                     id='password'
@@ -102,7 +85,9 @@ const RegisterForm: React.FC<{ onSuccessRegistration: () => void }> = ({
                     label='Password'
                   />
                   <Button
-                    title={isSubmitting ? 'Creating Account' : 'Create Account'}
+                    title={
+                      isSubmitting ? 'Logging in' : 'Login to your Account'
+                    }
                     classes='w-full rounded mt-2 py-4'
                     isSubmitting={isSubmitting}
                   />
@@ -122,4 +107,4 @@ const RegisterForm: React.FC<{ onSuccessRegistration: () => void }> = ({
   );
 };
 
-export default RegisterForm;
+export default LoginForm;

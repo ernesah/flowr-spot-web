@@ -4,4 +4,8 @@ async function createAccount(values: any) {
   return await api.post('/users/register', values);
 }
 
-export { createAccount };
+async function getLoggedInUserData() {
+  return await api.get('/users/me');
+}
+
+export { createAccount, getLoggedInUserData };

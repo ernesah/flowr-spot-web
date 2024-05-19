@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Button from '../Button';
 import Modal from '../modals/Modal';
 import RegisterForm from '../modals/RegisterFormModal';
+import LoginForm from '../modals/LoginFormModal';
 import headerLinks from '../../data/header-links.json';
+import { AuthContext } from '../../store/auth-context';
+import Avatar from '../../assets/images/menu-profile-holder.png';
 
 const HeaderMenuContent = () => {
+  const { user } = useContext(AuthContext);
   const [openModal, setOpenModal] = useState<string | null>(null);
 
   const toggleModal = (modalType: string | null) => {
@@ -27,22 +31,42 @@ const HeaderMenuContent = () => {
             </NavLink>
           </li>
         ))}
-        <li>
-          <Button type='link' title='Login' />
-        </li>
-        <li>
-          <Button
-            classes='font-montserrat rounded-3xl'
-            title='New Account'
-            handleClick={() => toggleModal('register')}
-          />
-        </li>
+        {!user ? (
+          <>
+            <li>
+              <Button
+                type='link'
+                title='Login'
+                handleClick={() => toggleModal('login')}
+              />
+            </li>
+            <li>
+              <Button
+                classes='font-montserrat rounded-3xl'
+                title='New Account'
+                handleClick={() => toggleModal('register')}
+              />
+            </li>
+          </>
+        ) : (
+          <div className='flex items-center gap-x-4 cursor-pointer'>
+            <p className='font-medium text-sm text-dusty-grey'>
+              {user.first_name} {user.last_name}
+            </p>
+            <img src={Avatar} alt='avatar' className='w-10 h-10' />
+          </div>
+        )}
       </ul>
       <Modal
         openModal={openModal !== null}
         handleClose={() => toggleModal(null)}
       >
-        {openModal === 'register' && <RegisterForm />}
+        {openModal === 'register' && (
+          <RegisterForm onSuccessRegistration={() => toggleModal('login')} />
+        )}
+        {openModal === 'login' && (
+          <LoginForm onSuccessLogin={() => toggleModal(null)} />
+        )}
       </Modal>
     </>
   );
