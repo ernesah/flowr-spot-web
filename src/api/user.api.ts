@@ -1,6 +1,14 @@
 import api from './api';
 
-async function createAccount(values: any) {
+interface RegistrationData {
+  first_name: string;
+  last_name: string;
+  date_of_birth: string;
+  email: string;
+  password: string;
+}
+
+async function createAccount(values: RegistrationData) {
   return await api.post('/users/register', values);
 }
 
