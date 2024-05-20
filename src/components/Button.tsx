@@ -1,6 +1,7 @@
 interface ButtonProps {
   title: string;
-  type?: 'primary' | 'link';
+  type?: 'button' | 'submit';
+  variant?: 'primary' | 'link';
   classes?: string;
   isSubmitting?: boolean;
   handleClick?: () => void;
@@ -8,7 +9,8 @@ interface ButtonProps {
 
 const Button = ({
   title,
-  type = 'primary',
+  type = 'button',
+  variant = 'primary',
   classes,
   isSubmitting,
   handleClick
@@ -16,10 +18,11 @@ const Button = ({
   return (
     <button
       className={`text-sm font-medium ${
-        type === 'primary'
+        variant === 'primary'
           ? 'bg-soft-pink-gradient text-white shadow-soft-pink py-3 px-5'
           : 'text-ruddy-pink'
       } ${classes}`}
+      type={type}
       onClick={handleClick}
       disabled={isSubmitting}
     >

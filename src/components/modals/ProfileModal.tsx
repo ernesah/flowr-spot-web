@@ -65,7 +65,7 @@ const ProfileModal: React.FC<{
       </div>
       <Button
         title='Logout'
-        type='primary'
+        variant='primary'
         classes='rounded px-8'
         handleClick={() => {
           closeModal();

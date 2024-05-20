@@ -36,7 +36,7 @@ const HeaderMenuContent = () => {
           <>
             <li>
               <Button
-                type='link'
+                variant='link'
                 title='Login'
                 handleClick={() => toggleModal('login')}
               />

@@ -43,7 +43,7 @@ const LoginForm: React.FC<{
             />
             <Button
               title='PROFILE'
-              type='link'
+              variant='link'
               classes='w-fit border border-ruddy-pink rounded py-4 px-5'
               handleClick={openProfile}
             />
@@ -87,6 +87,7 @@ const LoginForm: React.FC<{
                     label='Password'
                   />
                   <Button
+                    type='submit'
                     title={
                       isSubmitting ? 'Logging in' : 'Login to your Account'
                     }

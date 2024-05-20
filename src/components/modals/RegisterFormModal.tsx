@@ -102,6 +102,7 @@ const RegisterForm: React.FC<{ onSuccessRegistration: () => void }> = ({
                     label='Password'
                   />
                   <Button
+                    type='submit'
                     title={isSubmitting ? 'Creating Account' : 'Create Account'}
                     classes='w-full rounded mt-2 py-4'
                     isSubmitting={isSubmitting}
