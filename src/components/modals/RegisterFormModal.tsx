@@ -58,7 +58,7 @@ const RegisterForm: React.FC<{ onSuccessRegistration: () => void }> = ({
                 password: ''
               }}
               validationSchema={RegisterFormSchema}
-              onSubmit={async (values, { setErrors, setSubmitting }) => {
+              onSubmit={async (values, { setSubmitting }) => {
                 try {
                   const response = await createAccount(values);
                   if (response.data.auth_token) {

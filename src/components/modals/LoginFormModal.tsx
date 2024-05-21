@@ -61,7 +61,7 @@ const LoginForm: React.FC<{
                 password: ''
               }}
               validationSchema={LoginFormSchema}
-              onSubmit={async (values, { setErrors, setSubmitting }) => {
+              onSubmit={async (values, { setSubmitting }) => {
                 try {
                   const response = await loginApi(values);
                   if (response.data.auth_token) {
