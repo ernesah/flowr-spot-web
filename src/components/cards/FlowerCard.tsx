@@ -1,11 +1,20 @@
-import { useContext } from 'react';
+import { memo, useContext, useCallback } from 'react';
 import { AuthContext } from '../../store/auth-context';
 import Flower from '../../models/Flower';
 import grayStar from '../../assets/icons/gray-star.svg';
 import whiteStart from '../../assets/icons/white-star.svg';
 
-const FlowerCard = ({ data }: { data: Flower }) => {
+interface FlowerCardProps {
+  data: Flower;
+  toggleFavorite: (id: number) => void;
+}
+
+const FlowerCard = memo(({ data, toggleFavorite }: FlowerCardProps) => {
   const { user } = useContext(AuthContext);
+
+  const handleToggleFavorite = useCallback(() => {
+    toggleFavorite(data.id);
+  }, [data.id, toggleFavorite]);
 
   return (
     <div
@@ -16,19 +25,21 @@ const FlowerCard = ({ data }: { data: Flower }) => {
       style={{ backgroundImage: `url(${data.profile_picture})` }}
     >
       {user && (
-        <div
+        <button
+          type='button'
           className={`flex items-center ${
             data.favorite
               ? 'bg-soft-pink-gradient'
               : 'bg-white shadow-soft-elevation'
           } w-6 h-6 lg:w-circle-small lg:h-circle-small rounded-full p-1.5 ml-auto`}
+          onClick={handleToggleFavorite}
         >
           <img
             src={data.favorite ? whiteStart : grayStar}
             alt='star'
             className='w-full h-full'
           />
-        </div>
+        </button>
       )}
       <div className='flex flex-col items-center font-ubuntu'>
         <h3 className='text-xl capitalize'>{data.name}</h3>
@@ -45,6 +56,6 @@ const FlowerCard = ({ data }: { data: Flower }) => {
       </div>
     </div>
   );
-};
+});
 
 export default FlowerCard;

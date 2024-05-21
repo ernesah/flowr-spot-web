@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import SearchInput from '../components/SearchInput';
 import FlowerCard from '../components/cards/FlowerCard';
 import Loading from '../components/Loading';
@@ -27,6 +27,17 @@ const Home = () => {
     fetchFlowersList();
   }, []);
 
+  const toggleFavorite = useCallback(
+    (id: number) => {
+      setFlowersList((prevList) =>
+        prevList.map((flower) =>
+          flower.id === id ? { ...flower, favorite: !flower.favorite } : flower
+        )
+      );
+    },
+    [setFlowersList]
+  );
+
   if (loading) {
     return <Loading />;
   }
@@ -54,7 +65,11 @@ const Home = () => {
       <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-16 gap-5 px-4 pb-6'>
         {flowersList.length > 0 &&
           flowersList.map((item: Flower) => (
-            <FlowerCard key={item.id} data={item} />
+            <FlowerCard
+              key={item.id}
+              data={item}
+              toggleFavorite={toggleFavorite}
+            />
           ))}
       </div>
     </div>
