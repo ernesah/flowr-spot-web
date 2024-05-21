@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import useBodyOverflow from '../../hooks/useBodyOverflow';
 import HeaderMenuContent from './HeaderMenuContent';
 import logo from '../../assets/images/logo.png';
 import hamburgerMenuIcon from '../../assets/icons/hamburger-menu.svg';
@@ -8,13 +9,7 @@ import closeIcon from '../../assets/icons/close-icon.svg';
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }, [menuOpen]);
+  useBodyOverflow(menuOpen);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);

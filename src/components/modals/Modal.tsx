@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import useBodyOverflow from '../../hooks/useBodyOverflow';
 import closeIcon from '../../assets/icons/close-icon.svg';
 
 const Modal: React.FC<{
@@ -6,13 +7,7 @@ const Modal: React.FC<{
   children: React.ReactNode;
   handleClose: () => void;
 }> = ({ openModal, children, handleClose }) => {
-  useEffect(() => {
-    if (openModal) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-  }, [openModal]);
+  useBodyOverflow(openModal);
 
   if (!openModal) return null;
 
